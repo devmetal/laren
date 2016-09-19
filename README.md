@@ -7,6 +7,6 @@
 
 <!-- DESCRIPTION/ -->
 
-Command line tool for renaming files with custom lambda expression
+Command line tool for renaming files with custom function expression
 
 <!-- /DESCRIPTION -->

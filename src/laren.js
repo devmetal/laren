@@ -1,7 +1,10 @@
-const createUserFunction = lambda => new Function('f', 'i', lambda);
+const createUserFunction = require('./eval');
 
 module.exports = function laren(pattern, lambda, isTest) {
   const userFn = createUserFunction(lambda);
+  if (!userFn) {
+    process.exit(1);
+  }
 
   const glob = require('glob');
   const path = require('path');

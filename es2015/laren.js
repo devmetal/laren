@@ -4,12 +4,13 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
 
-var createUserFunction = function createUserFunction(lambda) {
-  return new Function('f', 'i', lambda);
-};
+var createUserFunction = require('./eval');
 
 module.exports = function laren(pattern, lambda, isTest) {
   var userFn = createUserFunction(lambda);
+  if (!userFn) {
+    process.exit(1);
+  }
 
   var glob = require('glob');
   var path = require('path');

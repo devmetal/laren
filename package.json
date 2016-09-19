@@ -1,7 +1,7 @@
 {
   "name": "laren",
   "version": "1.0.0",
-  "description": "Command line tool for renaming files with custom lambda expression",
+  "description": "Command line tool for renaming files with custom function expression",
   "main": "index.js",
   "editions": [
     {
@@ -17,7 +17,7 @@
     "laren": "./es2015/index.js"
   },
   "scripts": {
-    "test": "ava tests/**/*.js --fail-fast",
+    "test": "npm run build && ava tests/**/*.spec.js",
     "build": "babel ./src --out-dir ./es2015",
     "projectz": "projectz compile",
     "compile": "npm run build && npm run projectz"
@@ -26,7 +26,7 @@
     "rename",
     "cli"
   ],
-  "author": "Metál Ádám",
+  "author": "Metál Ádám <devmetal91@gmail.com> (https://github.com/devmetal)",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -45,7 +45,9 @@
     "babel-preset-es2015": "^6.14.0"
   },
   "maintainers": [],
-  "contributors": [],
+  "contributors": [
+    "Metál Ádám <devmetal91@gmail.com> (https://github.com/devmetal)"
+  ],
   "bugs": {
     "url": "https://github.com/devmetal/laren/issues"
   }

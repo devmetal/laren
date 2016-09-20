@@ -124,7 +124,7 @@ module.exports = function laren(pattern, lambda, isTest) {
 
           case 34:
             console.log(isTest ? 'Tests done!' : 'Rename done!');
-            _context.next = 41;
+            _context.next = 43;
             break;
 
           case 37:
@@ -133,8 +133,10 @@ module.exports = function laren(pattern, lambda, isTest) {
 
             console.log('Something wrong happend!');
             console.log('Check your syntax');
+            console.log(_context.t2.message);
+            console.log(_context.t2.stack);
 
-          case 41:
+          case 43:
           case 'end':
             return _context.stop();
         }

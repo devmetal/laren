@@ -1,6 +1,6 @@
 {
   "name": "laren",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Command line tool for renaming files with custom function expression",
   "preferGlobal": true,
   "main": "index.js",
@@ -49,7 +49,8 @@
   },
   "maintainers": [],
   "contributors": [
-    "Metál Ádám <devmetal91@gmail.com> (https://github.com/devmetal)"
+    "Metál Ádám <devmetal91@gmail.com> (https://github.com/devmetal)",
+    "Magyar László (https://github.com/lmagyar89)"
   ],
   "bugs": {
     "url": "https://github.com/devmetal/laren/issues"

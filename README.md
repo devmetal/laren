@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/devmetal/laren.svg?branch=master)](https://travis-ci.org/devmetal/laren)
+
 <!-- TITLE/ -->
 
 <h1>laren</h1>

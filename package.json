@@ -2,14 +2,17 @@
   "name": "laren",
   "version": "1.0.0",
   "description": "Command line tool for renaming files with custom function expression",
+  "preferGlobal": true,
   "main": "index.js",
   "editions": [
     {
       "description": "Source + ESNext + Require",
+      "directory": "src",
       "entry": "src/index.js"
     },
     {
       "description": "Babel Compiled + ES2015 + Require",
+      "directory": "es2015",
       "entry": "es2015/index.js"
     }
   ],

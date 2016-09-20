@@ -39,7 +39,7 @@ module.exports = function laren(pattern, lambda, isTest) {
     for (const [index, file] of files.entries()) {
       const dirname = path.dirname(file);
       const basename = path.basename(file);
-      const newName = userFn(basename, index);
+      const newName = userFn(basename, index).toString();
       const newPath = path.join(dirname, newName);
       console.log(file, '==>', newPath);
 

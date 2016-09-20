@@ -72,7 +72,7 @@ module.exports = function laren(pattern, lambda, isTest) {
               file = _step$value[1];
               dirname = path.dirname(file);
               basename = path.basename(file);
-              newName = userFn(basename, index);
+              newName = userFn(basename, index).toString();
               newPath = path.join(dirname, newName);
 
               console.log(file, '==>', newPath);

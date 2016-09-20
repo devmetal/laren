@@ -56,6 +56,8 @@ module.exports = function laren(pattern, lambda, isTest) {
     } catch(e) {
       console.log('Something wrong happend!');
       console.log('Check your syntax');
+	  console.log(e.message);
+	  console.log(e.stack);
     }
   })();
 };

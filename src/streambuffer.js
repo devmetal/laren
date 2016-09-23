@@ -6,14 +6,21 @@ util.inherits(StreamBuffer, stream.Transform);
 
 function StreamBuffer(size) {
   if (!(this instanceof StreamBuffer)) {
-    return new StreamBuffer();
+    return new StreamBuffer(size);
   }
 
-  this._size = size || 256;
-  this._length = 0;
-  this._factor = 2;
-  this._buffer = new Buffer(this._size);
+  if (size instanceof Buffer) {
+    this._size = size.length;
+    this._length = size.length;
+    this._buffer = new Buffer(this._size);
+    size.copy(this._buffer, 0, 0, this._size);
+  } else {
+    this._size = size || 256;
+    this._length = 0;
+    this._buffer = new Buffer(this._size);
+  }
 
+  this._factor = 2;
   stream.Transform.call(this);
 }
 
@@ -26,6 +33,11 @@ StreamBuffer.prototype.getContent = function () {
 };
 
 StreamBuffer.prototype._transform = function (chunk, enc, done) {
+  if (!chunk) {
+    this.emit("end", this.getContent());
+    return done();
+  }
+
   if (this._length + chunk.length > this._size) {
     const size = this._length + chunk.length * this._factor;
     const buffer = new Buffer(size);
@@ -45,7 +57,7 @@ StreamBuffer.prototype.end = function () {
   this.emit("end", this.getContent());
 };
 
-StreamBuffer.readAllFrom = (readable) => new Promise((resolve, reject) => 
-    readable.pipe(StreamBuffer()).on('end', resolve).on('error', reject));
+StreamBuffer.readAllFrom = (readable, initialBuffer = null) => new Promise((resolve, reject) => 
+    readable.pipe(StreamBuffer(initialBuffer)).on('end', resolve).on('error', reject));
 
 module.exports = StreamBuffer;

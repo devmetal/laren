@@ -20,7 +20,8 @@
     "laren": "./es2015/index.js"
   },
   "scripts": {
-    "test": "npm run build && ava tests/**/*.spec.js",
+    "test": "ava tests/**/*.spec.js",
+    "tdd": "npm run test -- --watch",
     "build": "babel ./src --out-dir ./es2015",
     "projectz": "projectz compile",
     "compile": "npm run build && npm run projectz"
@@ -45,7 +46,8 @@
     "ava": "^0.16.0",
     "babel-cli": "^6.14.0",
     "babel-plugin-transform-async-to-generator": "^6.8.0",
-    "babel-preset-es2015": "^6.14.0"
+    "babel-preset-es2015": "^6.14.0",
+    "babel-register": "^6.14.0"
   },
   "maintainers": [],
   "contributors": [
@@ -54,5 +56,11 @@
   ],
   "bugs": {
     "url": "https://github.com/devmetal/laren/issues"
+  },
+  "ava": {
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
   }
 }

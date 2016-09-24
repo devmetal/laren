@@ -6,6 +6,7 @@
 
 <!-- /TITLE -->
 
+![](out.gif)
 
 <!-- DESCRIPTION/ -->
 
@@ -23,7 +24,7 @@ npm install laren -g
 <h1>Usage</h1>
 
 ```bash
-laren <options> [pattern] [function]
+laren <pattern> [function] <options>
 ```
 
 <h2>[pattern]</h2>
@@ -31,6 +32,9 @@ This is a glob pattern.
 
 <h2>[function]</h2>
 The function parameter take 2 argument, filename and the index. You can write any function that you want.
+In the current version, the function is an optional argument. If any function provided by args, that will be used in files.
+If you don't give the function you have to type in terminal with an :exit (see example below) or you have to use unix pipe to
+send your function to stdin.
 
 <h2>Options</h2>
 
@@ -42,6 +46,24 @@ the files will be renamed.
 
 ```bash
 laren -t ./**/* "(f, i) => 'file' + i"
+./filea ==> file0
+./fileb ==> file1
+./filec ==> file2
+Tests done!
+```
+
+```bash
+laren -t ./**/*
+(f,i) => 'file' + i;
+:exit
+./filea ==> file0
+./fileb ==> file1
+./filec ==> file2
+Tests done!
+```
+
+```bash
+echo "(f,i) => 'file' + i;" | laren -t ./**/*
 ./filea ==> file0
 ./fileb ==> file1
 ./filec ==> file2

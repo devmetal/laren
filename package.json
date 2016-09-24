@@ -20,11 +20,14 @@
     "laren": "./es2015/index.js"
   },
   "scripts": {
-    "test": "ava tests/**/*.spec.js",
-    "tdd": "npm run test -- --watch",
-    "build": "babel ./src --out-dir ./es2015",
+    "test": "npm run test:src && npm run test:cli",
+    "test:cli": "npm run build && ava tests/**/*.cli.js",
+    "test:src": "ava tests/**/*.spec.js",
+    "tdd": "npm run test:src -- --watch",
+    "build": "npm run clean && babel ./src --out-dir ./es2015",
     "projectz": "projectz compile",
-    "compile": "npm run build && npm run projectz"
+    "compile": "npm run build && npm run projectz",
+    "clean": "rimraf ./es2015"
   },
   "keywords": [
     "rename",
@@ -47,19 +50,21 @@
     "babel-cli": "^6.14.0",
     "babel-plugin-transform-async-to-generator": "^6.8.0",
     "babel-preset-es2015": "^6.14.0",
-    "babel-register": "^6.14.0"
+    "babel-register": "^6.14.0",
+    "fs-extra": "^0.30.0",
+    "rimraf": "^2.5.4"
   },
   "maintainers": [],
   "contributors": [
     "Metál Ádám <devmetal91@gmail.com> (https://github.com/devmetal)",
-    "Magyar László (https://github.com/lmagyar89)"
+    "László Magyar (https://github.com/lmagyar89)"
   ],
   "bugs": {
     "url": "https://github.com/devmetal/laren/issues"
   },
   "ava": {
     "require": [
-      "babel-register"
+      "./tests/setup"
     ],
     "babel": "inherit"
   }

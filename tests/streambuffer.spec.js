@@ -3,7 +3,6 @@ import { Readable } from 'stream';
 import { Buffer } from 'buffer';
 import { inherits } from 'util';
 import StreamBuffer from '../src/streambuffer';
-import stdin from '../src/stdin';
 
 inherits(FakeStream, Readable);
 inherits(NullStream, Readable);
@@ -44,10 +43,5 @@ test('BufferStream can read from readable stream to a buffer', async (t) => {
 test('BufferStream can read from null stream and return empty string', async (t) => {
     const content = await StreamBuffer.readAllFrom(NullStream.create());
     t.is(content, "");
-});
-
-test('BufferStream will work with initial buffer', async (t) => {
-    const content = await StreamBuffer.readAllFrom(FakeStream.create(), new Buffer('Adam! '));
-    t.is(content, "Adam! Hello world");
 });
 

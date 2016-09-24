@@ -9,17 +9,9 @@ function StreamBuffer(size) {
     return new StreamBuffer(size);
   }
 
-  if (size instanceof Buffer) {
-    this._size = size.length;
-    this._length = size.length;
-    this._buffer = new Buffer(this._size);
-    size.copy(this._buffer, 0, 0, this._size);
-  } else {
-    this._size = size || 256;
-    this._length = 0;
-    this._buffer = new Buffer(this._size);
-  }
-
+  this._size = size || 256;
+  this._length = 0;
+  this._buffer = new Buffer(this._size);
   this._factor = 2;
   stream.Transform.call(this);
 }
@@ -57,7 +49,7 @@ StreamBuffer.prototype.end = function () {
   this.emit("end", this.getContent());
 };
 
-StreamBuffer.readAllFrom = (readable, initialBuffer = null) => new Promise((resolve, reject) => 
-    readable.pipe(StreamBuffer(initialBuffer)).on('end', resolve).on('error', reject));
+StreamBuffer.readAllFrom = (readable) => new Promise((resolve, reject) =>
+  readable.pipe(StreamBuffer()).on('end', resolve).on('error', reject));
 
 module.exports = StreamBuffer;

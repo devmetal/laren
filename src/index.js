@@ -3,14 +3,40 @@ require('babel-polyfill');
 
 const prog = require('commander');
 const laren = require('./laren');
+const stdin = require('./stdin');
+
+const action = async function (pattern, expression) {
+  try {
+    let lambda;
+
+    if (expression) {
+      lambda = expression;
+    } else {
+      lambda = await stdin(process.stdin);
+    }
+
+    const result = await laren(pattern, lambda, prog.test);
+    if (result === true) {
+      process.exit(0);
+    } else {
+      process.exit(1);
+    }
+  } catch (err) {
+    console.log('Error happend!');
+    console.log(err.message);
+    console.log(err.stack);
+  }
+}
 
 prog
   .version('1.0.0')
-  .usage('<options> [pattern] [function]')
-  .arguments('[pattern] [function]')
+  .usage('<pattern> [function]')
+  .arguments('<pattern> [function]')
   .option('-t, --test', 'Not actualy rename, just test renaming function')
-  .action((pattern, fun) => {
-    return laren(pattern, fun, prog.test);
+  .action((pattern, expression) => {
+    (async function () {
+      await action(pattern, expression);
+    })();
   });
 
 prog.parse(process.argv);

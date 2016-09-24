@@ -5,142 +5,124 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
 
 var createUserFunction = require('./eval');
+var glob = require('glob');
+var path = require('path');
+var fs = require('fs');
 
-module.exports = function laren(pattern, lambda, isTest) {
-  var userFn = createUserFunction(lambda);
-  if (!userFn) {
-    process.exit(1);
+var rename = function rename(oldpath, newpath) {
+  return new Promise(function (resolve, reject) {
+    fs.rename(oldpath, newpath, function (err) {
+      if (err) reject(err);
+      resolve();
+    });
+  });
+};
+
+var renameFiles = function renameFiles(files, userFn, isTest) {
+  var tasks = [];
+
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = files.entries()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var _step$value = _slicedToArray(_step.value, 2);
+
+      var index = _step$value[0];
+      var file = _step$value[1];
+
+      var dirname = path.dirname(file);
+      var basename = path.basename(file);
+      var newName = userFn(basename, index).toString();
+      var newPath = path.join(dirname, newName);
+
+      console.log(file, '==>', newPath);
+
+      if (isTest) {
+        tasks.push(Promise.resolve());
+      } else {
+        tasks.push(rename(file, newPath));
+      }
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
   }
 
-  var glob = require('glob');
-  var path = require('path');
-  var fs = require('fs');
+  return Promise.all(tasks);
+};
 
-  var rename = function rename(oldpath, newpath) {
-    return new Promise(function (resolve, reject) {
-      fs.rename(oldpath, newpath, function (err) {
-        if (err) reject(err);
-        resolve();
-      });
+var findFiles = function findFiles(pattern) {
+  return new Promise(function (resolve, reject) {
+    glob(pattern, function (err, files) {
+      if (err) reject(err);
+      resolve(files);
     });
-  };
+  });
+};
 
-  var findFiles = function findFiles() {
-    return new Promise(function (resolve, reject) {
-      glob(pattern, function (err, files) {
-        if (err) reject(err);
-        resolve(files);
-      });
-    });
-  };
-
-  _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-    var files, tasks, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _step$value, index, file, dirname, basename, newName, newPath;
-
+module.exports = function () {
+  var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(pattern, lambda, isTest) {
+    var userFn, files;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            files = void 0;
-            _context.prev = 1;
-            _context.next = 4;
-            return findFiles();
+            userFn = createUserFunction(lambda);
 
-          case 4:
-            files = _context.sent;
-            _context.next = 11;
-            break;
-
-          case 7:
-            _context.prev = 7;
-            _context.t0 = _context['catch'](1);
-
-            console.log('Invalid path given');
-            return _context.abrupt('return');
-
-          case 11:
-            tasks = [];
-            _iteratorNormalCompletion = true;
-            _didIteratorError = false;
-            _iteratorError = undefined;
-            _context.prev = 15;
-
-
-            for (_iterator = files.entries()[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-              _step$value = _slicedToArray(_step.value, 2);
-              index = _step$value[0];
-              file = _step$value[1];
-              dirname = path.dirname(file);
-              basename = path.basename(file);
-              newName = userFn(basename, index).toString();
-              newPath = path.join(dirname, newName);
-
-              console.log(file, '==>', newPath);
-
-              if (isTest) {
-                tasks.push(Promise.resolve());
-              } else {
-                tasks.push(rename(file, newPath));
-              }
-            }
-
-            _context.next = 23;
-            break;
-
-          case 19:
-            _context.prev = 19;
-            _context.t1 = _context['catch'](15);
-            _didIteratorError = true;
-            _iteratorError = _context.t1;
-
-          case 23:
-            _context.prev = 23;
-            _context.prev = 24;
-
-            if (!_iteratorNormalCompletion && _iterator.return) {
-              _iterator.return();
-            }
-
-          case 26:
-            _context.prev = 26;
-
-            if (!_didIteratorError) {
-              _context.next = 29;
+            if (userFn) {
+              _context.next = 3;
               break;
             }
 
-            throw _iteratorError;
+            return _context.abrupt('return', false);
 
-          case 29:
-            return _context.finish(26);
+          case 3:
+            _context.prev = 3;
+            _context.next = 6;
+            return findFiles(pattern);
 
-          case 30:
-            return _context.finish(23);
+          case 6:
+            files = _context.sent;
+            _context.next = 9;
+            return renameFiles(files, userFn, isTest);
 
-          case 31:
-            _context.prev = 31;
-            _context.next = 34;
-            return Promise.all(tasks);
-
-          case 34:
+          case 9:
             console.log(isTest ? 'Tests done!' : 'Rename done!');
-            _context.next = 43;
-            break;
+            return _context.abrupt('return', true);
 
-          case 37:
-            _context.prev = 37;
-            _context.t2 = _context['catch'](31);
+          case 13:
+            _context.prev = 13;
+            _context.t0 = _context['catch'](3);
 
             console.log('Something wrong happend!');
-            console.log('Check your syntax');
-            console.log(_context.t2.message);
-            console.log(_context.t2.stack);
+            console.log('Check your arguments');
+            console.log(e.message);
+            console.log(e.stack);
+            return _context.abrupt('return', false);
 
-          case 43:
+          case 20:
           case 'end':
             return _context.stop();
         }
       }
-    }, _callee, this, [[1, 7], [15, 19, 23, 31], [24,, 26, 30], [31, 37]]);
-  }))();
-};
+    }, _callee, this, [[3, 13]]);
+  }));
+
+  function laren(_x, _x2, _x3) {
+    return _ref.apply(this, arguments);
+  }
+
+  return laren;
+}();

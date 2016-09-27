@@ -26,7 +26,7 @@
     "tdd": "npm run test:src -- --watch",
     "build": "npm run clean && babel ./src --out-dir ./es2015",
     "projectz": "projectz compile",
-    "compile": "npm run build && npm run projectz",
+    "compile": "npm run lint && npm run build && npm run projectz",
     "clean": "rimraf ./es2015",
     "lint": "eslint src"
   },

@@ -5,7 +5,7 @@ const prog = require('commander');
 const laren = require('./laren');
 const stdin = require('./stdin');
 
-const action = async function (pattern, expression) {
+const action = async function action(pattern, expression) {
   try {
     let lambda;
 
@@ -26,7 +26,7 @@ const action = async function (pattern, expression) {
     console.log(err.message);
     console.log(err.stack);
   }
-}
+};
 
 prog
   .version('1.0.0')
@@ -34,9 +34,9 @@ prog
   .arguments('<pattern> [function]')
   .option('-t, --test', 'Not actualy rename, just test renaming function')
   .action((pattern, expression) => {
-    (async function () {
+    (async function doAction() {
       await action(pattern, expression);
-    })();
+    }());
   });
 
 prog.parse(process.argv);

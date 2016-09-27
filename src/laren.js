@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 
 const rename = (oldpath, newpath) => new Promise((resolve, reject) => {
-  fs.rename(oldpath, newpath, err => {
+  fs.rename(oldpath, newpath, (err) => {
     if (err) reject(err);
     resolve();
   });
@@ -29,9 +29,9 @@ const renameFiles = (files, userFn, isTest) => {
   }
 
   return Promise.all(tasks);
-}
+};
 
-const findFiles = (pattern) => new Promise((resolve, reject) => {
+const findFiles = pattern => new Promise((resolve, reject) => {
   glob(pattern, (err, files) => {
     if (err) reject(err);
     resolve(files);
@@ -45,15 +45,15 @@ module.exports = async function laren(pattern, lambda, isTest) {
   }
 
   try {
-    let files = await findFiles(pattern);
+    const files = await findFiles(pattern);
     await renameFiles(files, userFn, isTest);
     console.log((isTest) ? 'Tests done!' : 'Rename done!');
     return true;
   } catch (err) {
     console.log('Something wrong happend!');
     console.log('Check your arguments');
-    console.log(e.message);
-    console.log(e.stack);
+    console.log(err.message);
+    console.log(err.stack);
     return false;
   }
 };

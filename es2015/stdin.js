@@ -10,23 +10,25 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var stream = require('stream');
+var _require = require('stream');
+
+var Transform = _require.Transform;
+
+var _require2 = require('buffer');
+
+var Buffer = _require2.Buffer;
+
 var StreamBuffer = require('./streambuffer');
-
-var _require = require('buffer');
-
-var Buffer = _require.Buffer;
-
 
 var CLI_END = '\n:exit';
 
-var Cli = function (_stream$Transform) {
-  _inherits(Cli, _stream$Transform);
+var Cli = function (_Transform) {
+  _inherits(Cli, _Transform);
 
-  function Cli(options) {
+  function Cli() {
     _classCallCheck(this, Cli);
 
-    return _possibleConstructorReturn(this, (Cli.__proto__ || Object.getPrototypeOf(Cli)).call(this, options));
+    return _possibleConstructorReturn(this, (Cli.__proto__ || Object.getPrototypeOf(Cli)).apply(this, arguments));
   }
 
   _createClass(Cli, [{
@@ -44,18 +46,17 @@ var Cli = function (_stream$Transform) {
   }]);
 
   return Cli;
-}(stream.Transform);
+}(Transform);
 
-var StdIn = function (_stream$Transform2) {
-  _inherits(StdIn, _stream$Transform2);
+var StdIn = function (_Transform2) {
+  _inherits(StdIn, _Transform2);
 
   function StdIn(options) {
     _classCallCheck(this, StdIn);
 
     var _this2 = _possibleConstructorReturn(this, (StdIn.__proto__ || Object.getPrototypeOf(StdIn)).call(this, options));
 
-    _this2._chunks = [];
-    _this2._line = [];
+    _this2.line = [];
     return _this2;
   }
 
@@ -66,14 +67,14 @@ var StdIn = function (_stream$Transform2) {
       var nl = chr.indexOf('\n');
 
       if (nl === -1) {
-        this._line.push(chunk);
+        this.line.push(chunk);
       } else {
         var line = chr.substring(0, nl);
         var rem = chr.substring(nl);
 
-        this.push(Buffer.concat([].concat(_toConsumableArray(this._line), [new Buffer(line)])));
+        this.push(Buffer.concat([].concat(_toConsumableArray(this.line), [new Buffer(line)])));
 
-        this._line = [new Buffer(rem)];
+        this.line = [new Buffer(rem)];
       }
 
       done();
@@ -81,7 +82,7 @@ var StdIn = function (_stream$Transform2) {
   }]);
 
   return StdIn;
-}(stream.Transform);
+}(Transform);
 
 module.exports = function (istream) {
   var input = istream || process.stdin;

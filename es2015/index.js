@@ -66,27 +66,37 @@ var action = function () {
     }, _callee, this, [[0, 15]]);
   }));
 
-  return function action(_x, _x2) {
+  function action(_x, _x2) {
     return _ref.apply(this, arguments);
-  };
+  }
+
+  return action;
 }();
 
 prog.version('1.0.0').usage('<pattern> [function]').arguments('<pattern> [function]').option('-t, --test', 'Not actualy rename, just test renaming function').action(function (pattern, expression) {
-  _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            _context2.next = 2;
-            return action(pattern, expression);
+  (function () {
+    var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return action(pattern, expression);
 
-          case 2:
-          case 'end':
-            return _context2.stop();
+            case 2:
+            case 'end':
+              return _context2.stop();
+          }
         }
-      }
-    }, _callee2, this);
-  }))();
+      }, _callee2, this);
+    }));
+
+    function doAction() {
+      return _ref2.apply(this, arguments);
+    }
+
+    return doAction;
+  })()();
 });
 
 prog.parse(process.argv);

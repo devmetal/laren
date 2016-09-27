@@ -1,55 +1,51 @@
-const Buffer = require('buffer').Buffer;
-const stream = require('stream');
-const util = require('util');
+const { Buffer } = require('buffer');
+const { Transform } = require('stream');
 
-util.inherits(StreamBuffer, stream.Transform);
+class StreamBuffer extends Transform {
+  constructor(size) {
+    super();
 
-function StreamBuffer(size) {
-  if (!(this instanceof StreamBuffer)) {
-    return new StreamBuffer(size);
+    this.size = size || 256;
+    this.length = 0;
+    this.buffer = new Buffer(this.size);
+    this.factor = 2;
   }
 
-  this._size = size || 256;
-  this._length = 0;
-  this._buffer = new Buffer(this._size);
-  this._factor = 2;
-  stream.Transform.call(this);
-}
+  getBuffer() {
+    return this.buffer;
+  }
 
-StreamBuffer.prototype.getBuffer = function () {
-  return this._buffer;
-};
+  getContent() {
+    return this.buffer.toString('utf-8', 0, this.length);
+  }
 
-StreamBuffer.prototype.getContent = function () {
-  return this._buffer.toString('utf-8', 0, this._length);
-};
+  _transform(chunk, enc, done) {
+    if (!chunk) {
+      this.emit('end', this.getContent());
+      return done();
+    }
 
-StreamBuffer.prototype._transform = function (chunk, enc, done) {
-  if (!chunk) {
-    this.emit("end", this.getContent());
+    if (this.length + chunk.length > this.size) {
+      const size = this.length + (chunk.length * this.factor);
+      const buffer = new Buffer(size);
+      this.buffer.copy(buffer, 0, 0, this.length);
+      this.buffer = buffer;
+      this.size = size;
+    }
+
+    chunk.copy(this.buffer, this.length, 0);
+    this.length += chunk.length;
+
+    this.push(chunk);
     return done();
   }
 
-  if (this._length + chunk.length > this._size) {
-    const size = this._length + chunk.length * this._factor;
-    const buffer = new Buffer(size);
-    this._buffer.copy(buffer, 0, 0, this._length);
-    this._buffer = buffer;
-    this._size = size;
+  end() {
+    this.emit('end', this.getContent());
   }
+}
 
-  chunk.copy(this._buffer, this._length, 0);
-  this._length += chunk.length;
-
-  this.push(chunk);
-  done();
-};
-
-StreamBuffer.prototype.end = function () {
-  this.emit("end", this.getContent());
-};
-
-StreamBuffer.readAllFrom = (readable) => new Promise((resolve, reject) =>
-  readable.pipe(StreamBuffer()).on('end', resolve).on('error', reject));
+StreamBuffer.readAllFrom = readable => new Promise((resolve, reject) =>
+  readable.pipe(new StreamBuffer()).on('end', resolve).on('error', reject));
 
 module.exports = StreamBuffer;

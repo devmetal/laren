@@ -24,49 +24,49 @@ var StreamBuffer = function (_Transform) {
 
     var _this = _possibleConstructorReturn(this, (StreamBuffer.__proto__ || Object.getPrototypeOf(StreamBuffer)).call(this));
 
-    _this._size = size || 256;
-    _this._length = 0;
-    _this._buffer = new Buffer(_this._size);
-    _this._factor = 2;
+    _this.size = size || 256;
+    _this.length = 0;
+    _this.buffer = new Buffer(_this.size);
+    _this.factor = 2;
     return _this;
   }
 
   _createClass(StreamBuffer, [{
     key: 'getBuffer',
     value: function getBuffer() {
-      return this._buffer;
+      return this.buffer;
     }
   }, {
     key: 'getContent',
     value: function getContent() {
-      return this._buffer.toString('utf-8', 0, this._length);
+      return this.buffer.toString('utf-8', 0, this.length);
     }
   }, {
     key: '_transform',
     value: function _transform(chunk, enc, done) {
       if (!chunk) {
-        this.emit("end", this.getContent());
+        this.emit('end', this.getContent());
         return done();
       }
 
-      if (this._length + chunk.length > this._size) {
-        var size = this._length + chunk.length * this._factor;
+      if (this.length + chunk.length > this.size) {
+        var size = this.length + chunk.length * this.factor;
         var buffer = new Buffer(size);
-        this._buffer.copy(buffer, 0, 0, this._length);
-        this._buffer = buffer;
-        this._size = size;
+        this.buffer.copy(buffer, 0, 0, this.length);
+        this.buffer = buffer;
+        this.size = size;
       }
 
-      chunk.copy(this._buffer, this._length, 0);
-      this._length += chunk.length;
+      chunk.copy(this.buffer, this.length, 0);
+      this.length += chunk.length;
 
       this.push(chunk);
-      done();
+      return done();
     }
   }, {
     key: 'end',
     value: function end() {
-      this.emit("end", this.getContent());
+      this.emit('end', this.getContent());
     }
   }]);
 

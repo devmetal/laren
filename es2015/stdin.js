@@ -25,10 +25,10 @@ var CLI_END = '\n:exit';
 var Cli = function (_Transform) {
   _inherits(Cli, _Transform);
 
-  function Cli(options) {
+  function Cli() {
     _classCallCheck(this, Cli);
 
-    return _possibleConstructorReturn(this, (Cli.__proto__ || Object.getPrototypeOf(Cli)).call(this, options));
+    return _possibleConstructorReturn(this, (Cli.__proto__ || Object.getPrototypeOf(Cli)).apply(this, arguments));
   }
 
   _createClass(Cli, [{
@@ -56,7 +56,7 @@ var StdIn = function (_Transform2) {
 
     var _this2 = _possibleConstructorReturn(this, (StdIn.__proto__ || Object.getPrototypeOf(StdIn)).call(this, options));
 
-    _this2._line = [];
+    _this2.line = [];
     return _this2;
   }
 
@@ -66,15 +66,15 @@ var StdIn = function (_Transform2) {
       var chr = chunk.toString();
       var nl = chr.indexOf('\n');
 
-      if (!~nl) {
-        this._line.push(chunk);
+      if (nl === -1) {
+        this.line.push(chunk);
       } else {
         var line = chr.substring(0, nl);
         var rem = chr.substring(nl);
 
-        this.push(Buffer.concat([].concat(_toConsumableArray(this._line), [new Buffer(line)])));
+        this.push(Buffer.concat([].concat(_toConsumableArray(this.line), [new Buffer(line)])));
 
-        this._line = [new Buffer(rem)];
+        this.line = [new Buffer(rem)];
       }
 
       done();

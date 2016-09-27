@@ -5,10 +5,6 @@ const StreamBuffer = require('./streambuffer');
 const CLI_END = '\n:exit';
 
 class Cli extends Transform {
-  constructor(options) {
-    super(options);
-  }
-
   _transform(chunk, encoding, done) {
     const line = chunk.toString();
     if (line.startsWith(CLI_END)) {
@@ -24,31 +20,31 @@ class Cli extends Transform {
 class StdIn extends Transform {
   constructor(options) {
     super(options);
-    this._line = [];
+    this.line = [];
   }
 
   _transform(chunk, encoding, done) {
     const chr = chunk.toString();
     const nl = chr.indexOf('\n');
 
-    if (!(~nl)) {
-      this._line.push(chunk);
+    if (nl === -1) {
+      this.line.push(chunk);
     } else {
       const line = chr.substring(0, nl);
       const rem = chr.substring(nl);
 
       this.push(Buffer.concat([
-        ...this._line, new Buffer(line)
+        ...this.line, new Buffer(line),
       ]));
 
-      this._line = [new Buffer(rem)];
+      this.line = [new Buffer(rem)];
     }
 
     done();
   }
 }
 
-module.exports = function (istream) {
+module.exports = (istream) => {
   const input = istream || process.stdin;
   const stdin = new StdIn();
   const cli = new Cli();
@@ -60,4 +56,4 @@ module.exports = function (istream) {
   });
 
   return StreamBuffer.readAllFrom(stream);
-}
+};

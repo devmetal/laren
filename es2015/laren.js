@@ -108,8 +108,8 @@ module.exports = function () {
 
             console.log('Something wrong happend!');
             console.log('Check your arguments');
-            console.log(e.message);
-            console.log(e.stack);
+            console.log(_context.t0.message);
+            console.log(_context.t0.stack);
             return _context.abrupt('return', false);
 
           case 20:

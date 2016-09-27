@@ -20,7 +20,7 @@
     "laren": "./es2015/index.js"
   },
   "scripts": {
-    "test": "npm run test:src && npm run test:cli",
+    "test": "npm run lint && npm run test:src && npm run test:cli",
     "test:cli": "npm run build && ava tests/**/*.cli.js",
     "test:src": "ava tests/**/*.spec.js",
     "tdd": "npm run test:src -- --watch",

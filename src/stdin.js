@@ -1,10 +1,10 @@
-const stream = require('stream');
-const StreamBuffer = require('./streambuffer');
+const { Transform } = require('stream');
 const { Buffer } = require('buffer');
+const StreamBuffer = require('./streambuffer');
 
 const CLI_END = '\n:exit';
 
-class Cli extends stream.Transform {
+class Cli extends Transform {
   constructor(options) {
     super(options);
   }
@@ -21,10 +21,9 @@ class Cli extends stream.Transform {
   }
 }
 
-class StdIn extends stream.Transform {
+class StdIn extends Transform {
   constructor(options) {
     super(options);
-    this._chunks = [];
     this._line = [];
   }
 
@@ -32,7 +31,7 @@ class StdIn extends stream.Transform {
     const chr = chunk.toString();
     const nl = chr.indexOf('\n');
 
-    if (nl === -1) {
+    if (!(~nl)) {
       this._line.push(chunk);
     } else {
       const line = chr.substring(0, nl);

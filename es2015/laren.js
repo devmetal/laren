@@ -86,38 +86,22 @@ module.exports = function () {
               break;
             }
 
-            return _context.abrupt('return', false);
+            throw new Error('No function given!');
 
           case 3:
-            _context.prev = 3;
-            _context.next = 6;
+            _context.next = 5;
             return findFiles(pattern);
 
-          case 6:
+          case 5:
             files = _context.sent;
-            _context.next = 9;
-            return renameFiles(files, userFn, isTest);
+            return _context.abrupt('return', renameFiles(files, userFn, isTest));
 
-          case 9:
-            console.log(isTest ? 'Tests done!' : 'Rename done!');
-            return _context.abrupt('return', true);
-
-          case 13:
-            _context.prev = 13;
-            _context.t0 = _context['catch'](3);
-
-            console.log('Something wrong happend!');
-            console.log('Check your arguments');
-            console.log(_context.t0.message);
-            console.log(_context.t0.stack);
-            return _context.abrupt('return', false);
-
-          case 20:
+          case 7:
           case 'end':
             return _context.stop();
         }
       }
-    }, _callee, this, [[3, 13]]);
+    }, _callee, this);
   }));
 
   function laren(_x, _x2, _x3) {

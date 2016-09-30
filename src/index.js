@@ -5,6 +5,10 @@ const prog = require('commander');
 const laren = require('./laren');
 const stdin = require('./stdin');
 
+const printOutput = (isTest) => {
+  console.log((isTest) ? 'Tests done!' : 'Rename done!');
+};
+
 const action = async function action(pattern, expression) {
   try {
     let lambda;
@@ -15,16 +19,14 @@ const action = async function action(pattern, expression) {
       lambda = await stdin(process.stdin);
     }
 
-    const result = await laren(pattern, lambda, prog.test);
-    if (result === true) {
-      process.exit(0);
-    } else {
-      process.exit(1);
-    }
+    await laren(pattern, lambda, prog.test);
+    printOutput(prog.test);
+    process.exit(0);
   } catch (err) {
-    console.log('Error happend!');
+    console.log('Something wrong happend!');
     console.log(err.message);
     console.log(err.stack);
+    process.exit(1);
   }
 };
 

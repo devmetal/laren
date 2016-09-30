@@ -41,19 +41,9 @@ const findFiles = pattern => new Promise((resolve, reject) => {
 module.exports = async function laren(pattern, lambda, isTest) {
   const userFn = createUserFunction(lambda);
   if (!userFn) {
-    return false;
+    throw new Error('No function given!');
   }
 
-  try {
-    const files = await findFiles(pattern);
-    await renameFiles(files, userFn, isTest);
-    console.log((isTest) ? 'Tests done!' : 'Rename done!');
-    return true;
-  } catch (err) {
-    console.log('Something wrong happend!');
-    console.log('Check your arguments');
-    console.log(err.message);
-    console.log(err.stack);
-    return false;
-  }
+  const files = await findFiles(pattern);
+  return renameFiles(files, userFn, isTest);
 };

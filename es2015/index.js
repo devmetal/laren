@@ -9,9 +9,13 @@ var prog = require('commander');
 var laren = require('./laren');
 var stdin = require('./stdin');
 
+var printOutput = function printOutput(isTest) {
+  console.log(isTest ? 'Tests done!' : 'Rename done!');
+};
+
 var action = function () {
   var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(pattern, expression) {
-    var lambda, result;
+    var lambda;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -40,25 +44,21 @@ var action = function () {
             return laren(pattern, lambda, prog.test);
 
           case 11:
-            result = _context.sent;
-
-            if (result === true) {
-              process.exit(0);
-            } else {
-              process.exit(1);
-            }
-            _context.next = 20;
+            printOutput(prog.test);
+            process.exit(0);
+            _context.next = 21;
             break;
 
           case 15:
             _context.prev = 15;
             _context.t0 = _context['catch'](0);
 
-            console.log('Error happend!');
+            console.log('Something wrong happend!');
             console.log(_context.t0.message);
             console.log(_context.t0.stack);
+            process.exit(1);
 
-          case 20:
+          case 21:
           case 'end':
             return _context.stop();
         }

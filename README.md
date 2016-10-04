@@ -6,9 +6,6 @@
 
 <!-- /TITLE -->
 
-
-![](out.gif)
-
 <!-- DESCRIPTION/ -->
 
 Command line tool for renaming files with custom function expression

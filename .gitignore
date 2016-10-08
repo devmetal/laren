@@ -43,3 +43,16 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+# Build Files
+build/
+components/
+bower_components/
+node_modules/
+out/
+*output/
+coffeejs/
+coffee/
+es5/
+es2015/
+esnext/

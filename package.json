@@ -4,18 +4,6 @@
   "description": "Command line tool for renaming files with custom function expression",
   "preferGlobal": true,
   "main": "index.js",
-  "editions": [
-    {
-      "description": "Source + ESNext + Require",
-      "directory": "src",
-      "entry": "src/index.js"
-    },
-    {
-      "description": "Babel Compiled + ES2015 + Require",
-      "directory": "es2015",
-      "entry": "es2015/index.js"
-    }
-  ],
   "bin": {
     "laren": "./es2015/index.js"
   },
@@ -58,13 +46,20 @@
     "fs-extra": "^0.30.0",
     "rimraf": "^2.5.4"
   },
-  "maintainers": [],
+  "maintainers": [
+    "Metál Ádám <devmetal91@gmail.com> (https://github.com/devmetal)"
+  ],
   "contributors": [
     "Metál Ádám <devmetal91@gmail.com> (https://github.com/devmetal)",
     "László Magyar (https://github.com/lmagyar89)"
   ],
   "bugs": {
     "url": "https://github.com/devmetal/laren/issues"
+  },
+  "badges": {
+    "list": [
+      "travisci"
+    ]
   },
   "ava": {
     "require": [

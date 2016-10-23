@@ -1,6 +1,6 @@
 {
   "name": "laren",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Command line tool for renaming files with custom function expression",
   "preferGlobal": true,
   "main": "index.js",

@@ -1,10 +1,16 @@
-[![Build Status](https://travis-ci.org/devmetal/laren.svg?branch=master)](https://travis-ci.org/devmetal/laren)
-
 <!-- TITLE/ -->
 
 <h1>laren</h1>
 
 <!-- /TITLE -->
+
+
+<!-- BADGES/ -->
+
+<span class="badge-travisci"><a href="http://travis-ci.org/devmetal/laren" title="Check this project's build status on TravisCI"><img src="https://img.shields.io/travis/devmetal/laren/master.svg" alt="Travis CI Build Status" /></a></span>
+
+<!-- /BADGES -->
+
 
 <!-- DESCRIPTION/ -->
 
@@ -13,13 +19,18 @@ Command line tool for renaming files with custom function expression
 <!-- /DESCRIPTION -->
 
 
-<h1>Install</h1>
+<!-- INSTALL/ -->
 
-```bash
-npm install laren -g
-```
+<h2>Install</h2>
 
-<h1>Usage</h1>
+<a href="https://npmjs.com" title="npm is a package manager for javascript"><h3>NPM</h3></a><ul>
+<li>Install: <code>npm install --global laren</code></li>
+<li>Executable: <code>laren</code></li></ul>
+
+<!-- /INSTALL -->
+
+
+## Usage
 
 ```bash
 laren <pattern> [function] <options>
@@ -67,3 +78,54 @@ echo "(f,i) => 'file' + i;" | laren -t ./**/*
 ./filec ==> file2
 Tests done!
 ```
+
+<!-- HISTORY/ -->
+
+<h2>History</h2>
+
+<a href="https://github.com/devmetal/laren/releases">Discover the release history by heading on over to the releases page.</a>
+
+<!-- /HISTORY -->
+
+
+<!-- BACKERS/ -->
+
+<h2>Backers</h2>
+
+<h3>Maintainers</h3>
+
+These amazing people are maintaining this project:
+
+<ul><li><a href="https://github.com/devmetal">Metál Ádám</a> — <a href="https://github.com/devmetal/laren/commits?author=devmetal" title="View the GitHub contributions of Metál Ádám on repository devmetal/laren">view contributions</a></li></ul>
+
+<h3>Sponsors</h3>
+
+No sponsors yet! Will you be the first?
+
+
+
+<h3>Contributors</h3>
+
+These amazing people have contributed code to this project:
+
+<ul><li><a href="https://github.com/devmetal">Metál Ádám</a> — <a href="https://github.com/devmetal/laren/commits?author=devmetal" title="View the GitHub contributions of Metál Ádám on repository devmetal/laren">view contributions</a></li>
+<li><a href="https://github.com/lmagyar89">László Magyar</a> — <a href="https://github.com/devmetal/laren/commits?author=lmagyar89" title="View the GitHub contributions of László Magyar on repository devmetal/laren">view contributions</a></li></ul>
+
+
+
+<!-- /BACKERS -->
+
+
+<!-- LICENSE/ -->
+
+<h2>License</h2>
+
+Unless stated otherwise all works are:
+
+<ul><li>Copyright &copy; <a href="https://github.com/devmetal">Metál Ádám</a></li></ul>
+
+and licensed under:
+
+<ul><li><a href="http://spdx.org/licenses/MIT.html">MIT License</a></li></ul>
+
+<!-- /LICENSE -->

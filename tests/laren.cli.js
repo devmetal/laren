@@ -18,10 +18,5 @@ test('laren command line', async (t) => {
   await exec(`node ${executable} "${pattern}" "${renameLambda}"`);
   files = removeTestFiles(testDir);
   t.deepEqual(files, ['0','1','2']);
-
-  createTestFiles(testDir);
-  await exec(`echo "${renameLambda}" | node ${executable} "${pattern}"`);
-  files = removeTestFiles(testDir);
-  t.deepEqual(files, ['0','1','2']);
 });
 

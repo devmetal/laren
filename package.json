@@ -12,6 +12,7 @@
     "test:cli": "npm run build && ava tests/**/*.cli.js",
     "test:src": "ava tests/**/*.spec.js",
     "tdd": "npm run test:src -- --watch",
+    "flow": "flow; test $? -eq 0 -o $? -eq 2",
     "build": "npm run clean && babel ./src --out-dir ./es2015",
     "projectz": "projectz compile",
     "compile": "npm run lint && npm run build && npm run projectz",
@@ -43,6 +44,7 @@
     "eslint": "^3.6.1",
     "eslint-config-airbnb-base": "^8.0.0",
     "eslint-plugin-import": "^1.16.0",
+    "flow-bin": "^0.36.0",
     "fs-extra": "^0.30.0",
     "rimraf": "^2.5.4"
   },

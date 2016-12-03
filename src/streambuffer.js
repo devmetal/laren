@@ -1,25 +1,31 @@
+// @flow
+
 const { Buffer } = require('buffer');
-const { Transform } = require('stream');
+const { Transform, Readable } = require('stream');
 
 class StreamBuffer extends Transform {
-  constructor(size) {
+  size: number;
+  length: number = 0;
+  factor: number = 0;
+  buffer: Buffer;
+
+  constructor(size: number = 256) {
     super();
 
-    this.size = size || 256;
-    this.length = 0;
+    this.size = size;
     this.buffer = new Buffer(this.size);
     this.factor = 2;
   }
 
-  getBuffer() {
+  getBuffer(): Buffer {
     return this.buffer;
   }
 
-  getContent() {
+  getContent(): string {
     return this.buffer.toString('utf-8', 0, this.length);
   }
 
-  _transform(chunk, enc, done) {
+  _transform(chunk: Buffer, enc: string, done: Function) {
     if (!chunk) {
       this.emit('end', this.getContent());
       return done();
@@ -43,9 +49,11 @@ class StreamBuffer extends Transform {
   end() {
     this.emit('end', this.getContent());
   }
-}
 
-StreamBuffer.readAllFrom = readable => new Promise((resolve, reject) =>
-  readable.pipe(new StreamBuffer()).on('end', resolve).on('error', reject));
+  static readAllFrom(readable: Readable): Promise<mixed> {
+    return  new Promise((resolve, reject) =>
+      readable.pipe(new StreamBuffer()).on('end', resolve).on('error', reject));
+  }
+}
 
 module.exports = StreamBuffer;

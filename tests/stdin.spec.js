@@ -29,11 +29,5 @@ FakeStream.prototype.end = function () {
 test('stdin can read from a stream and buffer that until :exit', async (t) => {
   const fake = new FakeStream(new Buffer('Hello\nWorld\n:exit\ncontentisgoingon'))
   const content = await stdin(fake);
-  t.is(content, 'Hello\nWorld');
-});
-
-test('stdin can read from a stream and buffer that until end signal', async (t) => {
-  const fake = new FakeStream(new Buffer('Hello\nWorld\n'))
-  const content = await stdin(fake);
-  t.is(content, 'Hello\nWorld');
+  t.is(content, 'Hello\nWorld\n');
 });

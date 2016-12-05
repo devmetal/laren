@@ -1,10 +1,12 @@
-const { PassThrough } = require('stream');
+// @flow
+
+const { PassThrough, Readable } = require('stream');
 const StreamBuffer = require('./streambuffer');
 const readline = require('readline');
 
 const CLI_END = ':exit';
 
-module.exports = (istream) => {
+module.exports = (istream: ?Readable): Promise<string> => {
   const input = istream || process.stdin;
   const output = process.stdout;
 

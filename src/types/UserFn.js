@@ -1,0 +1,1 @@
+declare type UserFn = (name: string, index: number) => string;

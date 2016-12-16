@@ -42,8 +42,7 @@ This is a glob pattern.
 <h2>[function]</h2>
 The function parameter take 2 argument, filename and the index. You can write any function that you want.
 In the current version, the function is an optional argument. If any function provided by args, that will be used in files.
-If you don't give the function you have to type in terminal with an :exit (see example below) or you have to use unix pipe to
-send your function to stdin.
+If you don't give the function you have to type in terminal with an :exit (see example below).
 
 <h2>Options</h2>
 
@@ -65,14 +64,6 @@ Tests done!
 laren -t ./**/*
 (f,i) => 'file' + i;
 :exit
-./filea ==> file0
-./fileb ==> file1
-./filec ==> file2
-Tests done!
-```
-
-```bash
-echo "(f,i) => 'file' + i;" | laren -t ./**/*
 ./filea ==> file0
 ./fileb ==> file1
 ./filec ==> file2

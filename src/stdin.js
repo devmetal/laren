@@ -1,59 +1,22 @@
-const { Transform } = require('stream');
-const { Buffer } = require('buffer');
-const StreamBuffer = require('./streambuffer');
+// @flow
 
-const CLI_END = '\n:exit';
+import type { Readable } from 'stream';
 
-class Cli extends Transform {
-  _transform(chunk, encoding, done) {
-    const line = chunk.toString();
-    if (line.startsWith(CLI_END)) {
-      this.emit('exit');
-      this.push(null);
-    } else {
-      this.push(chunk);
-    }
-    done();
-  }
-}
+const split = require('split');
+const { EventEmitter } = require('events');
 
-class StdIn extends Transform {
-  constructor(options) {
-    super(options);
-    this.line = [];
-  }
+module.exports = (istream: ?Readable): EventEmitter => {
+  const files = new EventEmitter();
+  const input: Readable = istream || process.stdin;
+  const stream = input.pipe(split());
 
-  _transform(chunk, encoding, done) {
-    const chr = chunk.toString();
-    const nl = chr.indexOf('\n');
-
-    if (nl === -1) {
-      this.line.push(chunk);
-    } else {
-      const line = chr.substring(0, nl);
-      const rem = chr.substring(nl);
-
-      this.push(Buffer.concat([
-        ...this.line, new Buffer(line),
-      ]));
-
-      this.line = [new Buffer(rem)];
-    }
-
-    done();
-  }
-}
-
-module.exports = (istream) => {
-  const input = istream || process.stdin;
-  const stdin = new StdIn();
-  const cli = new Cli();
-  const stream = input.pipe(stdin).pipe(cli);
-
-  cli.once('exit', () => {
-    input.unpipe(stdin);
-    input.end();
+  stream.on('data', (file: File) => {
+    files.emit('file', file);
   });
 
-  return StreamBuffer.readAllFrom(stream);
-};
+  stream.on('end', () => {
+    files.emit('end');
+  });
+
+  return files;
+}

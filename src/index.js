@@ -1,22 +1,25 @@
 #!/usr/bin/env node
+
+// @flow
+
 require('babel-polyfill');
 
 const prog = require('commander');
 const laren = require('./laren');
-const stdin = require('./stdin');
+const cli = require('./cli');
 
-const printOutput = (isTest) => {
+const printOutput = (isTest: boolean) => {
   console.log((isTest) ? 'Tests done!' : 'Rename done!');
 };
 
-const action = async function action(pattern, expression) {
+const action = async function action(pattern: string, expression: ?string) {
   try {
-    let lambda;
+    let lambda: string;
 
     if (expression) {
       lambda = expression;
     } else {
-      lambda = await stdin(process.stdin);
+      lambda = await cli(process.stdin);
     }
 
     await laren(pattern, lambda, prog.test);
@@ -35,7 +38,7 @@ prog
   .usage('<pattern> [function]')
   .arguments('<pattern> [function]')
   .option('-t, --test', 'Not actualy rename, just test renaming function')
-  .action((pattern, expression) => {
+  .action((pattern: string, expression: string) => {
     (async function doAction() {
       await action(pattern, expression);
     }());

@@ -6,7 +6,7 @@ require('babel-polyfill');
 
 const prog = require('commander');
 const laren = require('./laren');
-const stdin = require('./stdin');
+const cli = require('./cli');
 
 const printOutput = (isTest: boolean) => {
   console.log((isTest) ? 'Tests done!' : 'Rename done!');
@@ -19,7 +19,7 @@ const action = async function action(pattern: string, expression: ?string) {
     if (expression) {
       lambda = expression;
     } else {
-      lambda = await stdin(process.stdin);
+      lambda = await cli(process.stdin);
     }
 
     await laren(pattern, lambda, prog.test);

@@ -1,35 +1,22 @@
 // @flow
 
-const { PassThrough, Readable } = require('stream');
-const StreamBuffer = require('./streambuffer');
-const readline = require('readline');
+import type { Readable } from 'stream';
 
-const CLI_END = ':exit';
+const split = require('split');
+const { EventEmitter } = require('events');
 
-module.exports = (istream: ?Readable): Promise<string> => {
-  const input = istream || process.stdin;
-  const output = process.stdout;
+module.exports = (istream: ?Readable): EventEmitter => {
+  const files = new EventEmitter();
+  const input: Readable = istream || process.stdin;
+  const stream = input.pipe(split());
 
-  const reader = readline.createInterface({
-    input,
-    output,
-    prompt: '> ',
+  stream.on('data', (file: File) => {
+    files.emit('file', file);
   });
 
-  const lines = new PassThrough();
-
-  reader.prompt();
-
-  reader.on('line', (data) => {
-    const line = data.trim();
-    if (line === CLI_END) {
-      lines.push(null);
-      reader.close();
-    } else {
-      lines.push(`${line}\n`);
-      reader.prompt();
-    }
+  stream.on('end', () => {
+    files.emit('end');
   });
 
-  return StreamBuffer.readAllFrom(lines);
-};
+  return files;
+}
